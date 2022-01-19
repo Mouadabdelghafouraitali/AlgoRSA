@@ -1,4 +1,4 @@
-# 1 - Choose two primes randomly (e.g. 1 3 5 9 ...) number P,Q
+# 1 - choose two primes randomly (e.g. 1 3 5 9 ...) number P,Q
 # 2 - Compute N = P x Q
 # 3 - Compute Phi(n) = (P - 1) x (Q - 1)
 # 4 - Choose e, 1 > e > Phi  + GCD (Phi(n)) if result is 1 then e = the GCD of Phi(n)
@@ -15,7 +15,7 @@ from sympy import *
 # Choose two primes randomly number P,Q
 
 def get_random_prime():
-    primes = [i for i in range(1, 20) if isprime(i)]
+    primes = [i for i in range(1, 500) if isprime(i)]
     return random.choice(primes)
 
 
@@ -50,7 +50,15 @@ print("Public key are [ e = {} and n = {} ]".format(e, n))
 
 # Private key = (d,n)  | d = e^-1 mod Phi(n)
 def get_d(e, phi_n):
-    return mod_inverse(e, phi_n)
+    t, newt = 0, 1
+    r, newr = phi_n, e
+    while newr != 0:
+        q = r // newr
+        t, newt = newt, t - q * newt
+        r, newr = newr, r - q * newr
+    if t < 0:
+        t = t + phi_n
+    return t
 
 
 d = get_d(e, phi_n)
@@ -59,31 +67,23 @@ print("Private key are [ d = {} and n = {} ]".format(d, n))
 
 # Encryption : c = m^e mod n
 
-def encrypt(plaintext):
+def encrypt(plain_text):
     # ord =  Return the Unicode code point for a one-character string
-    cipher = []
-    for m in plaintext:
-        cipher.append(pow(ord(m), e) % n)
-    return cipher
+    cipher_text = [ord(x) ** e % n for x in plain_text]
+    return cipher_text
 
 
-plaintext = input("Please enter text to encrypt : ")
-ciphertext = encrypt(plaintext)
-print("Encryption of {} is {}".format(plaintext, ciphertext))
+plain_text = input("Please enter text to encrypt : ")
+cipher_text = encrypt(plain_text)
+print("Encryption of {} is {}".format(plain_text, cipher_text))
 
 
 # Decryption : m = c^d mod n
 
-def decrypt(ciphertext):
-    message = []
-    # chr = Return a Unicode string of one character with ordinal i
-    for c in ciphertext:
-        message.append(chr((int(c) ** d) % n))
-    return message
+def decrypt(cipher_text):
+    decoded_text = ''.join([chr(x ** d % n) for x in cipher_text])
+    return decoded_text
 
 
-message = decrypt(ciphertext)
-print("Decryption of {} is {}".format(ciphertext, message))
-
-
-
+message = decrypt(cipher_text)
+print("Decryption of {} is {}".format(cipher_text, message))

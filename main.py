@@ -7,6 +7,7 @@
 # 7 - Encryption : C = m^e mod N
 # 8 - Decryption : m = c^d mod n
 
+
 import random
 from sympy import *
 
@@ -83,3 +84,6 @@ def decrypt(ciphertext):
 
 message = decrypt(ciphertext)
 print("Decryption of {} is {}".format(ciphertext, message))
+
+
+

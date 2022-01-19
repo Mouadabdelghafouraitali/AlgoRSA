@@ -1,4 +1,4 @@
-# 1 - choose two primes randomly (e.g. 1 3 5 9 ...) number P,Q
+# 1 - Choose two primes randomly (e.g. 1 3 5 9 ...) number P,Q
 # 2 - Compute N = P x Q
 # 3 - Compute Phi(n) = (P - 1) x (Q - 1)
 # 4 - Choose e, 1 > e > Phi  + GCD (Phi(n)) if result is 1 then e = the GCD of Phi(n)
@@ -8,9 +8,6 @@
 # 8 - Decryption : m = c^d mod n
 
 import random
-import sys
-
-import rsa
 from sympy import *
 
 
